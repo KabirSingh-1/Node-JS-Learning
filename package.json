@@ -1,0 +1,21 @@
+{
+  "name": "node-js-learning",
+  "version": "1.0.0",
+  "description": "",
+  "homepage": "https://github.com/KabirSingh-1/Node-JS-Learning#readme",
+  "bugs": {
+    "url": "https://github.com/KabirSingh-1/Node-JS-Learning/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KabirSingh-1/Node-JS-Learning.git"
+  },
+  "license": "ISC",
+  "author": "",
+  "type": "commonjs",
+  "main": "HelloWorld.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start":  "node HelloWorld.js"
+  }
+}
