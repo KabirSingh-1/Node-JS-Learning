@@ -14,6 +14,11 @@ const myServer = http.createServer((req ,res) => {
                 const username = myUrl.query.myname;
                 res.end(`I am ${username}`)
             break
+            case '/singup':
+                if(req.method === "GET") res.end("this is a singup Form");
+                else if(req.method === "POST"){
+                    res.end("Success")
+                }
             default: res.end("404 Not Found")
         }
     });
