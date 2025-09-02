@@ -1,8 +1,8 @@
 const fs = require("fs");
-// sync
+// sync- blocking operations
 // fs.writeFileSync("./test.txt", "Hey Kabir")
 
-// async
+// async - non blocking operations 
 // fs.writeFile("./test.txt","Hello World Async",(err) => {})
 
 // const result = fs.readFileSync("./Contacts.txt","utf-8");
