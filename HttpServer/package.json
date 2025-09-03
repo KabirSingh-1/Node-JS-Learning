@@ -8,9 +8,10 @@
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "Node index"
+    "start": "Node express"
   },
   "dependencies": {
+    "express": "^5.1.0",
     "url": "^0.11.4"
   }
 }
