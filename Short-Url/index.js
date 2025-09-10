@@ -1,31 +1,45 @@
 const express = require("express");
-const app = express();
 const path = require('path');
 const { connectToMongoDB } = require("./connect");
-
-const urlRoute = require("./routes/url");
-const URL = require("./models/Url");
-
-
+const urlRoute = require('./routes/url')
+const staticRoute = require('./routes/staticRouter')
+const URL = require('./models/url')
+const app = express();
+const PORT = 8001;
+// Connect to MongoDB
 connectToMongoDB("mongodb://localhost:27017/short-url")
-  .then(() => console.log("✅ MongoDB Has Connected"))
+  .then(() => console.log("✅ MongoDB Connected"))
   .catch((err) => console.error("❌ MongoDB connection error:", err));
-
 app.set("view engine","ejs");
-app.set('views', path.resolve("./views") );
-app.use(express.json());
-
-// test route
-app.get("/test", async(req, res) => {
+app.set('views', path.resolve("./views"));
+app.use(express.json())
+app.use(express.urlencoded({extended:false}))
+app.use("/",staticRoute);
+app.get('/test', async (req, res) => {
   const allUrls = await URL.find({});
-//   res.send("<h1>Hey from server</h1>");
-return res.render('Home',{
-  urls: allUrls,
-})
+  return res.render("Home",{
+    urls : allUrls,
+  });
+});
+app.use("/url", urlRoute);
+app.get('/url/:shortId', async (req, res) => {
+  const shortId = req.params.shortId;
+
+  const entry = await URL.findOneAndUpdate(
+    { shortId }, // ✅ search by shortId, not _id
+    {
+      $push: {
+        visitHistory: { timestamp: Date.now() },
+      },
+    },
+    { new: true } // ✅ return updated document
+  );
+
+  if (!entry) {
+    return res.status(404).send("Short URL not found!");
+  }
+
+  res.redirect(entry.redirectURL);
 });
 
-// url shortener routes
-app.use("/url", urlRoute);
-
-const PORT = 8001;
-app.listen(PORT, () => console.log(`🚀 Server Started at PORT: ${PORT}`));
+app.listen(PORT, () => console.log(`🚀 Server started at http://localhost:${PORT}`));
